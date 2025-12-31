@@ -1,0 +1,204 @@
+﻿@model IEnumerable<ArtGallery.Models.Order>
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid py-4 px-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="text-white fw-bold mb-0">Orders</h2>
+            <p class="text-muted small">Review and manage customer transactions</p>
+        </div>
+    </div>
+
+    <div class="custom-card shadow-lg">
+        <div class="table-responsive">
+            <table class="table table-borderless align-middle custom-table">
+                <thead>
+                    <tr>
+                        <th>ORDER ID</th>
+                        <th>CUSTOMER</th>
+                        <th>ARTWORK</th>
+                        <th>PRICE</th>
+                        <th>DATE</th>
+                        <th>STATUS</th>
+                        <th class="text-end">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-muted">#@item.OrderId</td>
+                            <td>
+                                <div class="fw-bold text-white">@item.User.FullName</div>
+                                <div class="text-muted x-small">Customer</div>
+                            </td>
+                            <td class="text-white">@item.Artwork.Title</td>
+                            <td class="accent-color fw-bold">Rs. @item.TotalAmount.ToString("N0")</td>
+                            <td class="text-muted">@item.OrderDate.ToShortDateString()</td>
+                            <td>
+                                @if (item.AdminStatus == "Pending")
+                                {
+                                    <span class="status-badge status-pending">PENDING</span>
+                                }
+                                else if (item.AdminStatus == "Approved")
+                                {
+                                    <span class="status-badge status-approved">APPROVED</span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge status-rejected">REJECTED</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                @if (item.AdminStatus == "Pending")
+                                {
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <form asp-controller="Admin" asp-action="ApproveOrder" method="post">
+                                            <input type="hidden" name="orderId" value="@item.OrderId" />
+                                            <button type="submit" class="btn btn-action btn-approve">Approve</button>
+                                        </form>
+                                        <form asp-controller="Admin" asp-action="RejectOrder" method="post">
+                                            <input type="hidden" name="orderId" value="@item.OrderId" />
+                                            <button type="submit" class="btn btn-action btn-reject">Reject</button>
+                                        </form>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="text-muted small italic">Processed</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<style>
+:root {
+    --bg-main: #0f0f0f;
+    --bg-card: #1e1e1e;
+    --bg-row-hover: linear-gradient(90deg, #2b241b, #1e1e1e);
+    --border-soft: #2c2c2c;
+
+    --text-main: #ffffff;
+    --text-muted: #9a9a9a;
+
+    --accent-gold: #ff9800;
+    --accent-gold-soft: rgba(255,152,0,0.15);
+
+    --green: #2ecc71;
+    --green-soft: rgba(46,204,113,0.15);
+
+    --red: #ff4d4f;
+    --red-soft: rgba(255,77,79,0.15);
+}
+
+/* Card */
+.custom-card {
+    background: var(--bg-card);
+    border-radius: 14px;
+    padding: 22px;
+    border: 1px solid var(--border-soft);
+}
+
+/* Table */
+.custom-table {
+    color: var(--text-main);
+}
+
+.custom-table thead th {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 1.4px;
+    border-bottom: 1px solid var(--border-soft);
+    padding-bottom: 16px;
+}
+
+.custom-table tbody tr {
+    border-bottom: 1px solid var(--border-soft);
+    transition: all 0.3s ease;
+}
+
+.custom-table tbody tr:hover {
+    background: var(--bg-row-hover);
+}
+
+.custom-table td {
+    vertical-align: middle;
+}
+
+/* Price */
+.accent-color {
+    color: var(--accent-gold);
+    font-weight: 700;
+}
+
+/* Status Badges */
+.status-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 6px;
+    letter-spacing: 0.6px;
+}
+
+.status-pending {
+    color: var(--accent-gold);
+    background: var(--accent-gold-soft);
+    border: 1px solid var(--accent-gold);
+}
+
+.status-approved {
+    color: var(--green);
+    background: var(--green-soft);
+    border: 1px solid var(--green);
+}
+
+.status-rejected {
+    color: var(--red);
+    background: var(--red-soft);
+    border: 1px solid var(--red);
+}
+
+/* Action Buttons */
+.btn-action {
+    padding: 5px 14px;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    background: transparent;
+    transition: 0.3s ease;
+}
+
+.btn-approve {
+    color: var(--green);
+    border: 1px solid var(--green);
+}
+
+.btn-approve:hover {
+    background: var(--green);
+    color: #fff;
+}
+
+.btn-reject {
+    color: var(--red);
+    border: 1px solid var(--red);
+}
+
+.btn-reject:hover {
+    background: var(--red);
+    color: #fff;
+}
+
+/* Small text */
+.x-small {
+    font-size: 0.7rem;
+}
+
+.italic {
+    font-style: italic;
+}
+</style>

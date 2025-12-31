@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - Artist</title>
+    <link rel="stylesheet" href="~/css/Artis.css" />
+</head>
+<body>
+
+    <div class="artist-wrapper">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo">🎨 ArtStudio</div>
+
+            <ul class="menu">
+                <li class="active"><a asp-controller="Artist" asp-action="Dashboard">Dashboard</a></li>
+                @* <li><a asp-controller="Artist" asp-action="UploadArt">Upload Art</a></li> *@
+                <li><a href="/ArtisUpload">Upload Art</a></li>
+                <li><a href="/Artistwork">My Artwork</a></li>
+
+
+                @* <li><a asp-controller="Artist" asp-action="MyArtworks">My Artworks</a></li> *@
+                <li><a asp-controller="Artist" asp-action="Orders">Orders</a></li>
+                @* <li><a asp-controller="Artist" asp-action="Exhibitions">Exhibitions</a></li> *@
+                <li><a href="/ArtistExhibition">Exhibitions</a></li>
+
+                <li><a asp-controller="Artist" asp-action="Notifications">Notifications</a></li>
+                <li><a asp-controller="Artist" asp-action="Profile">Profile</a></li>
+                <a asp-controller="Artis" asp-action="Logout" class="btn btn-danger">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
+            </ul>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="content">
+            @RenderBody()
+            @RenderSection("Scripts", required: false)
+
+        </main>
+
+    </div>
+
+</body>
+</html>

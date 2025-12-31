@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_ArtisLayout.cshtml";
+}
+
+<div class="dashboard-header">
+    <h1>Welcome back, <span>Artist</span></h1>
+    <p>Manage your artworks and exhibitions</p>
+</div>
+
+<!-- STATS -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <h4>Total Artworks</h4>
+        <h2>48</h2>
+    </div>
+
+    <div class="stat-card">
+        <h4>On Sale</h4>
+        <h2>22</h2>
+    </div>
+
+    <div class="stat-card">
+        <h4>In Auction</h4>
+        <h2>6</h2>
+    </div>
+
+    <div class="stat-card">
+        <h4>Orders Pending</h4>
+        <h2>8</h2>
+    </div>
+</div>
+
+<!-- RECENT ARTWORKS -->
+<div class="section">
+    <h3>Recent Artworks</h3>
+
+    <div class="list-item">
+        <span>Monsoon Dreams (Abstract)</span>
+        <span class="tag sale">On Sale</span>
+    </div>
+
+    <div class="list-item">
+        <span>Village Morning (Landscape)</span>
+        <span class="tag auction">Auction</span>
+    </div>
+</div>
+
+<!-- RECENT ORDERS -->
+<div class="section">
+    <h3>Recent Orders</h3>
+
+    <div class="list-item">
+        <span>Sunset Canvas</span>
+        <span class="tag pending">Pending</span>
+    </div>
+
+    <div class="list-item">
+        <span>Mountain Peace</span>
+        <span class="tag shipped">Shipped</span>
+    </div>
+</div>

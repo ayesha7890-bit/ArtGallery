@@ -1,0 +1,61 @@
+﻿@model IEnumerable<ArtGallery.Models.Artist>
+@{
+    ViewData["Title"] = "Exhibitions";
+    Layout = "_AdminLayout";
+}
+
+<h2>Pending ExhibitionRequests</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Artwork</th>
+            <th>Artist</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+    @if (!Model.Any())
+    {
+        <tr>
+            <td colspan="5" class="text-center">
+                <p style="padding:20px; color:red;">Dont have request yet .</p>
+            </td>
+        </tr>
+    }
+    else
+    {
+        @foreach (var art in Model)
+        {
+            <tr>
+                <td>@art.Title</td>
+                </tr>
+        }
+    }
+
+        @foreach (var art in Model)
+        {
+            <tr>
+                <td>@art.Title</td>
+                <td>@art.Artists</td>
+                <td>@art.Category</td>
+                <td>@art.Status</td>
+                <td>
+
+                    <form method="post" asp-controller="Admin" asp-action="ApproveRequest" style="display:inline">
+                        <input type="hidden" name="id" value="@art.ArtworkId" />
+                        <button type="submit" class="btn btn-success">Approve</button>
+                    </form>
+
+                    <form method="post" asp-controller="Admin" asp-action="RejectRequest" style="display:inline">
+                        <input type="hidden" name="id" value="@art.ArtworkId" />
+                        <button type="submit" class="btn btn-danger">Reject</button>
+                    </form>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

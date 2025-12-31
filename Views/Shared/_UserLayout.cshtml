@@ -1,0 +1,322 @@
+﻿@* <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artisan Gallery - @ViewData["Title"]</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ======================================================= */
+        /* === GLOBAL BASE STYLES (Dark Theme) === */
+        /* ======================================================= */
+        html, body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main Wrapper for dynamic content area */
+        .content-wrapper {
+            flex-grow: 1; /* Allows content area to take up remaining space */
+            padding-top: 6rem; /* Space for fixed navbar */
+            padding-bottom: 2rem;
+        }
+
+        /* ======================================================= */
+        /* === NAVIGATION BAR STYLES === */
+        /* ======================================================= */
+        .navbar-custom {
+            background-color: rgba(0, 0, 0, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: fixed; /* Fixed position at the top */
+            width: 100%;
+            top: 0;
+            z-index: 1030;
+        }
+
+        .navbar-brand-custom {
+            /* Golden Gradient Style */
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-family: 'Playfair Display', serif;
+            background-image: linear-gradient(to right, #ffaa00, #ff6600);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .nav-link-custom {
+            color: #ffffff !important;
+            opacity: 0.8;
+            padding: 0.5rem 1rem;
+            transition: opacity 0.3s, color 0.3s;
+        }
+
+            .nav-link-custom:hover {
+                opacity: 1;
+                color: #ffaa00 !important;
+            }
+
+        .btn-action {
+            background: linear-gradient(to right, #ff9900, #ff4500);
+            border: none;
+            color: #000;
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: opacity 0.3s;
+        }
+
+            .btn-action:hover {
+                opacity: 0.9;
+                color: #000;
+            }
+
+        /* ======================================================= */
+        /* === FOOTER STYLES === */
+        /* ======================================================= */
+        .footer-custom {
+            background-color: #0a0a0a; /* Slightly darker than body */
+            color: #aaaaaa;
+            padding: 3rem 0 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background-image: linear-gradient(to right, #ffaa00, #ff6600);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .footer-heading {
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .footer-link, .footer-text {
+            color: #aaaaaa;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+            .footer-link:hover {
+                color: #ffaa00;
+            }
+
+        .social-icon-link {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-right: 15px;
+            transition: color 0.3s;
+        }
+
+            .social-icon-link:hover {
+                color: #ffaa00;
+            }
+
+        .copyright {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-custom" href="#">ArtisanGallery</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link nav-link-custom active" aria-current="page" href="/User">Home</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Exhibition</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Artists</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Contact</a></li>
+                </ul>
+
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-sm" style="color: #fff; margin-right: 10px;"><i class="fas fa-search"></i></button>
+                    <a href="#" class="btn btn-action">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main>
+        @RenderBody()  <!-- Yeh zaroori hai -->
+    </main>
+
+
+    <footer class="footer-custom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="footer-logo mb-3">ArtisanGallery</div>
+                    <p class="footer-text">
+                        Discover and collect contemporary art from established and emerging artists worldwide.
+                    </p>
+                    <div class="social-links mt-3">
+                        <a href="#" class="social-icon-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-md-2 mb-4">
+                    <h6 class="footer-heading">Quick Links</h6>
+                    <a href="#" class="footer-link">Home</a>
+                    <a href="#" class="footer-link">Exhibitions</a>
+                    <a href="#" class="footer-link">Artists</a>
+                    <a href="#" class="footer-link">About Us</a>
+                    <a href="#" class="footer-link">Contact</a>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                    <h6 class="footer-heading">Support</h6>
+                    <a href="#" class="footer-link">Help Center</a>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Service</a>
+                    <a href="#" class="footer-link">FAQs</a>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                    <h6 class="footer-heading">Get in Touch</h6>
+                    <p class="footer-text"><i class="fas fa-map-marker-alt me-2"></i> 123 Art District, NY 10001</p>
+                    <p class="footer-text"><i class="fas fa-phone-alt me-2"></i> +1 (555) 123-4567</p>
+                    <p class="footer-text"><i class="fas fa-envelope me-2"></i> info@artisangallery.com</p>
+                </div>
+            </div>
+
+            <div class="copyright">
+                &copy; 2025 ArtisanGallery. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> *@
+
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - ArtGallery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/User.css" />
+
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" asp-controller="User" asp-action="User">ArtGallerY</a>
+
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link text-white" asp-controller="User" asp-action="User">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="#Exhibitions">Exhibition</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="#collection">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="#Auctions">Auctions</a></li>
+                </ul>
+
+                @if (HttpContextAccessor.HttpContext.Session.GetString("UserName") != null)
+                {
+                    <span class="text-white me-3">
+                        Hi, <b>@HttpContextAccessor.HttpContext.Session.GetString("UserName")</b>
+                    </span>
+
+                    <a asp-controller="User" asp-action="Logout" class="btn-art-solid">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="User" asp-action="Login" class="btn-art-outline">Sign In</a>
+                    <a asp-controller="User" asp-action="Register" class="btn-art-solid">Sign Up</a>
+                }
+            </div>
+        </div>
+    </nav>
+    <!-- ================= NAVBAR END ================= -->
+    <!-- ================= PAGE BODY ================= -->
+    <main>
+        @RenderBody()
+    </main>
+    <!-- ================= BODY END ================= -->
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer-custom mt-5">
+        <hr class="footer-divider" />
+
+        <div class="container text-center pb-3">
+            <p class="mb-1">&copy; 2024 Artisan Gallery. All rights reserved.</p>
+
+            <div class="bottom-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+        </div>
+    </footer>
+    <!-- ================= FOOTER END ================= -->
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        AOS.init({ duration: 1200, once: true });
+
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 50) {
+                $('.navbar-custom').addClass('navbar-scrolled');
+            } else {
+                $('.navbar-custom').removeClass('navbar-scrolled');
+            }
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

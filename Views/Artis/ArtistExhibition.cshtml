@@ -1,0 +1,295 @@
+﻿@{
+    ViewData["Title"] = "Exhibitions";
+    Layout = "_ArtisLayout";
+}
+
+
+<style>
+    /* Color Palette */
+    :root {
+        --primary-orange: #E46A38;
+        --dark-text: #2D241E;
+        --bg-light: #F9F9F9;
+        --muted-text: #888888;
+        --border-color: #f1f1f1;
+    }
+
+    .exhibition-container {
+        background-color: var(--bg-light);
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--dark-text);
+    }
+
+    .max-content-width {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .main-title {
+        font-family: serif; /* Serif used as per design */
+        font-size: 3rem;
+        font-weight: 700;
+    }
+
+        .main-title .highlight {
+            color: var(--primary-orange);
+        }
+
+    .sub-title {
+        color: var(--muted-text);
+        font-size: 1.1rem;
+    }
+
+    .section-heading {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 25px;
+    }
+
+    /* Cards Design */
+    .request-card {
+        background: white;
+        border-radius: 30px;
+        padding: 30px;
+        margin-bottom: 20px;
+        position: relative;
+        border: 1px solid var(--border-color);
+    }
+
+    .card-content {
+        display: flex;
+        gap: 20px;
+    }
+
+    .icon-box {
+        width: 60px;
+        height: 60px;
+        background: #FFF7ED;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .ex-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .ex-desc {
+        color: var(--muted-text);
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+    }
+
+    .ex-meta {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        color: #A0A0A0;
+        font-size: 0.85rem;
+    }
+
+    /* Status Badges */
+    .status-badge {
+        position: absolute;
+        top: 25px;
+        right: 30px;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+
+    .approved {
+        background: #F0FDF4;
+        color: #16A34A;
+    }
+
+    .pending {
+        background: #FFF7ED;
+        color: var(--primary-orange);
+    }
+
+    .rejected {
+        background: #FEF2F2;
+        color: #DC2626;
+    }
+
+    /* Reason Box */
+    .reason-box {
+        background: #FEF2F2;
+        border: 1px solid #fee2e2;
+        padding: 15px;
+        border-radius: 12px;
+        color: #DC2626;
+        font-size: 0.9rem;
+    }
+
+    /* Right Side Cards */
+    .side-card {
+        background: white;
+        border-radius: 30px;
+        padding: 30px;
+        border: 1px solid var(--border-color);
+    }
+
+    .side-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .event-item {
+        background: #F9F9F9;
+        padding: 20px;
+        border-radius: 15px;
+        border-left: 4px solid var(--primary-orange);
+        margin-bottom: 15px;
+    }
+
+        .event-item h4 {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .event-item p {
+            font-size: 0.85rem;
+            color: var(--muted-text);
+            margin: 2px 0;
+        }
+
+    .stat-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 20px;
+        border-radius: 15px;
+        margin-bottom: 10px;
+        font-weight: 500;
+    }
+
+    .approved-bg {
+        background: #F0FDF4;
+    }
+
+    .pending-bg {
+        background: #FFF7ED;
+    }
+
+    .approved-text {
+        color: #16A34A;
+        font-weight: 700;
+    }
+
+    .pending-text {
+        color: var(--primary-orange);
+        font-weight: 700;
+    }
+
+    .stat-count {
+        font-size: 1.1rem;
+    }
+</style>
+
+<div class="exhibition-container">
+    <div class="container-fluid py-5">
+        <div class="max-content-width">
+
+            <header class="page-header">
+                <h1 class="main-title">Exhibition <span class="highlight">Requests</span></h1>
+                <p class="sub-title">Request to showcase your art in exhibitions</p>
+            </header>
+
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <h2 class="section-heading">My Exhibition Requests</h2>
+
+                    <div class="request-card shadow-sm">
+                        <span class="status-badge approved">Approved</span>
+                        <div class="card-content">
+                            <div class="icon-box">📅</div>
+                            <div class="text-box">
+                                <h3 class="ex-title">Contemporary Art Festival 2024</h3>
+                                <p class="ex-desc">Annual showcase of contemporary Indian art featuring emerging artists.</p>
+                                <div class="ex-meta">
+                                    <span>📍 National Gallery, Mumbai</span>
+                                    <span>🕒 Dec 15-20, 2024</span>
+                                    <span>🖼️ Monsoon Dreams</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="request-card shadow-sm">
+                        <span class="status-badge pending">Pending</span>
+                        <div class="card-content">
+                            <div class="icon-box">📅</div>
+                            <div class="text-box">
+                                <h3 class="ex-title">Winter Art Bazaar</h3>
+                                <p class="ex-desc">Curated exhibition celebrating rural India through modern art.</p>
+                                <div class="ex-meta">
+                                    <span>📍 Art District, Delhi</span>
+                                    <span>🕒 Jan 5-10, 2025</span>
+                                    <span>🖼️ Village Morning</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="request-card shadow-sm">
+                        <span class="status-badge rejected">Rejected</span>
+                        <div class="card-content">
+                            <div class="icon-box">📅</div>
+                            <div class="text-box">
+                                <h3 class="ex-title">Abstract Expressions</h3>
+                                <p class="ex-desc">Exploration of abstract art forms and their emotional impact.</p>
+                                <div class="ex-meta mb-3">
+                                    <span>📍 Modern Art Museum, Bangalore</span>
+                                    <span>🕒 Feb 1-15, 2025</span>
+                                    <span>🖼️ Ocean Whispers</span>
+                                </div>
+                                <div class="reason-box">
+                                    <p><strong>Reason:</strong> Artwork style doesn't match the exhibition theme.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="side-card shadow-sm mb-4">
+                        <h2 class="side-title">Upcoming Events</h2>
+                        <div class="event-item">
+                            <h4>Artist Meetup: Mumbai Chapter</h4>
+                            <p>📅 Dec 12, 2024</p>
+                            <p>🕒 6:00 PM</p>
+                            <p>📍 Kala Ghoda Arts District</p>
+                        </div>
+                        <div class="event-item">
+                            <h4>Art Workshop: Watercolors</h4>
+                            <p>📅 Dec 18, 2024</p>
+                            <p>🕒 10:00 AM</p>
+                            <p>📍 Online Event</p>
+                        </div>
+                    </div>
+
+                    <div class="side-card shadow-sm">
+                        <h2 class="side-title">My Exhibition Stats</h2>
+                        <div class="stat-row approved-bg">
+                            <span>Approved</span>
+                            <span class="stat-count approved-text">5</span>
+                        </div>
+                        <div class="stat-row pending-bg">
+                            <span>Pending</span>
+                            <span class="stat-count pending-text">2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

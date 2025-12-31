@@ -1,0 +1,167 @@
+body {
+    background-color: #121212 !important;  Darkest background 
+    color: #f0f0f0;  Light text color 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#wrapper {
+    display: flex;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    width: 250px;  Fixed width sidebar 
+    position: fixed;
+    z-index: 1000;
+    transition: all 0.5s ease;
+}
+
+.bg-sidebar {
+    background-color: #1f1f1f;  Darker background for sidebar 
+}
+
+#page-content-wrapper {
+    width: 100%;
+    margin-left: 250px;  Content area sidebar jitna hat jayega 
+    transition: all 0.5s ease;
+    padding-top: 60px;  Header ke liye space 
+}
+
+#wrapper.toggled #page-content-wrapper {
+    margin-left: 0;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: -250px;
+}
+
+@media (max-width: 991.98px) {
+    #sidebar-wrapper {
+        margin-left: -250px;
+    }
+
+    #page-content-wrapper {
+        margin-left: 0;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        margin-left: 250px;
+    }
+}
+
+
+.sidebar-heading {
+    border-bottom: 1px solid #333;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.list-group-item {
+    padding: 1rem 1.5rem;
+    border: none;
+     transition zaroori hai smooth effect ke liye 
+    transition: background-color 0.2s, color 0.2s;
+    color: #f0f0f0 !important;  Default text color set kiya 
+}
+
+    .list-group-item:hover {
+        background-color: #ffc107 !important;  Yellow/Warning color 
+        color: #121212 !important;  Black text color 
+    }
+
+        .list-group-item:hover i {
+            color: #121212 !important;
+        }
+ ?? END OF CHANGES ?? 
+
+
+.active-sidebar-item {
+    background-color: #3f3f3f !important;  Active item background 
+    border-left: 5px solid #ffc107;  Warning color border 
+    padding-left: calc(1.5rem - 5px);  Border ki wajah se padding adjust ki 
+    color: #f0f0f0 !important;  Active item ka text color 
+}
+
+.sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid #333;
+}
+
+
+.bg-dark-header {
+    background-color: #1f1f1f !important;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+}
+
+
+.bg-dark-card {
+    background-color: #1f1f1f;  Card background color 
+    color: #f0f0f0;
+    border: 1px solid #333;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.stat-card {
+    background-color: #1f1f1f;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+}
+
+    .stat-card:hover {
+        transform: translateY(-5px);  Slight lift on hover 
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+    }
+
+
+.table-dark th {
+    border-bottom: 2px solid #ffc107;  Yellow border for table header 
+    color: #ffc107;
+}
+
+.table-dark {
+    --bs-table-bg: #1f1f1f;  Bootstrap table dark background override 
+    --bs-table-hover-bg: #333;
+}
+
+    .table-dark td {
+        border-color: #333;
+    }
+
+.form-control.bg-dark,
+.form-select.bg-dark {
+    background-color: #333 !important;
+    color: #f0f0f0 !important;
+    border-color: #555 !important;
+}
+
+    .form-control.bg-dark:focus,
+    .form-select.bg-dark:focus {
+        background-color: #333 !important;
+        border-color: #ffc107 !important;
+        box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+    }
+
+.quick-action-link {
+    display: block;
+    background-color: #1f1f1f;
+    border: 1px solid #333;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+    .quick-action-link:hover {
+        transform: translateY(-3px);
+        border-color: #ffc107;  Highlight on hover 
+    }

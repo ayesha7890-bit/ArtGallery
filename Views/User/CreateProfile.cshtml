@@ -1,0 +1,169 @@
+﻿@model ArtGallery.Models.Profile
+
+@{
+    Layout = "_AccountLayout"; // Hum wahi layout use kar rahe hain jo register mein tha
+}
+
+
+<style>
+    /* Dropdown Fix */
+    .input-dark {
+        background-color: #2a2a2a !important; /* Dark background */
+        color: white !important; /* White text */
+        border: 1px solid #444 !important;
+    }
+
+        /* Dropdown ke andar ke options ko style karna */
+        .input-dark option {
+            background-color: #1a1a1a; /* Option list background */
+            color: white;
+        }
+
+    /* Subtitle line fix */
+    .text-white-50 {
+        color: rgba(255, 255, 255, 0.6) !important;
+        display: block; /* Ensure it's not hidden */
+    }
+
+    /* Labels fix */
+    .form-label {
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    .extra-small {
+        font-size: 0.75rem;
+    }
+
+    .input-group-text {
+        border-radius: 8px 0 0 8px;
+        border-right: none;
+        background-color: #212529 !important;
+        border: 1px solid #444;
+    }
+
+    /* Input field border fix */
+    .form-control.input-dark, .form-select.input-dark {
+        border-radius: 8px !important;
+    }
+</style>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<div class="text-center mb-4">
+    <div class="mb-3">
+        <span class="step-pill">Step 2: Profile Setup</span>
+    </div>
+    <h2 class="fw-bold mb-1">Complete Your <span class="gold-text">Profile</span></h2>
+    <p class="text-white-50 small">Provide your details to get personalized art recommendations</p>
+</div>
+
+<form asp-action="CreateProfile" method="post">
+    @* Validations *@
+    <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+    @* Full Name (Profile Model ke hisab se) *@
+    <div class="mb-3">
+        <label class="form-label small fw-bold text-uppercase opacity-50">Full Name</label>
+        <div class="input-group">
+            @* <span class="input-group-text bg-dark border-0 text-muted"><i class="bi bi-person-badge"></i></span> *@
+            <input asp-for="FullName" type="text" class="form-control input-dark" placeholder="Enter your full name" required />
+        </div>
+        <span asp-validation-for="FullName" class="text-danger extra-small"></span>
+    </div>
+
+    <div class="row">
+        @* Age *@
+        <div class="col-md-6 mb-3">
+            <label class="form-label small fw-bold text-uppercase opacity-50">Age</label>
+            <div class="input-group">
+                @* <span class="input-group-text bg-dark border-0 text-muted"><i class="bi bi-calendar-event"></i></span> *@
+                <input asp-for="Age" type="number" class="form-control input-dark" placeholder="e.g. 25" required />
+            </div>
+            <span asp-validation-for="Age" class="text-danger extra-small"></span>
+        </div>
+
+        @* Sex (Gender) *@
+        <div class="col-md-6 mb-3">
+            <label class="form-label small fw-bold text-uppercase opacity-50">Sex (Gender)</label>
+            <select asp-for="Sex" class="form-select input-dark" required>
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+            <span asp-validation-for="Sex" class="text-danger extra-small"></span>
+        </div>
+    </div>
+
+    @* Interest (Important Part as per Doc) *@
+    @* Interest (Important Part as per Doc) *@
+    <div class="mb-4">
+        <label class="form-label small fw-bold text-uppercase opacity-50">Interest Related to Art</label>
+        <div class="input-group">
+            <select asp-for="Interest" class="form-select input-dark" required>
+                <option value="">Choose your favorite category</option>
+
+                @* 🚩 Admin ki categories ka loop *@
+                @if (ViewBag.AdminCategories != null)
+                {
+                    foreach (var cat in (IEnumerable<ArtGallery.Models.Category>)ViewBag.AdminCategories)
+                    {
+                        <option value="@cat.Name">@cat.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <span asp-validation-for="Interest" class="text-danger extra-small"></span>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-action w-100 py-2">
+            Save & Enter Gallery <i class="bi bi-check2-circle ms-2"></i>
+        </button>
+    </div>
+</form>
+
+<style>
+    .extra-small {
+        font-size: 0.75rem;
+    }
+
+    .input-group-text {
+        border-radius: 8px 0 0 8px;
+        border-right: none;
+    }
+
+    .input-dark {
+        border-radius: 0 8px 8px 0 !important;
+    }
+
+    /* Agar layout handle nahi kar raha toh ye backup styles hain */
+    .gold-text {
+        color: #D4AF37;
+    }
+
+    .step-pill {
+        background: rgba(212, 175, 55, 0.1);
+        color: #D4AF37;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .btn-action {
+        background: #D4AF37;
+        color: black;
+        font-weight: bold;
+        border: none;
+    }
+
+        .btn-action:hover {
+            background: #b8962e;
+            color: black;
+        }
+</style>
+
+<script>
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+</script>

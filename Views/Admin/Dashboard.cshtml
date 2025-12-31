@@ -1,0 +1,54 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@* --- Model Assumption (for data display) --- *@
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_AdminLayout";
+}
+<style>
+    <link rel="stylesheet" href="/css/admin.css" / >
+</style>
+
+
+<div class="dashboard">
+    <h1>Dashboard</h1>
+    <p>Welcome back! Here's an overview of your gallery.</p>
+
+    <div class="cards-grid">
+
+        <div class="card">
+            <div class="icon">👤</div>
+            <h2>1</h2>
+            <p>Total Users</p>
+        </div>
+
+        <div class="card">
+             <div class="icon">⏳</div> 
+
+            <h2>4</h2>
+            <p>
+                Upcoming Exhibitions
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">🎭</div>
+            <h2>1</h2>
+            <p>Total Artworks</p>
+        </div>
+
+        <div class="card">
+            <div class="icon">📂</div>
+            <h2>5</h2>
+            <p>Categories</p>
+        </div>
+
+      
+
+    </div>
+
+</div>

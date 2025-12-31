@@ -1,0 +1,386 @@
+﻿@model List<ArtGallery.Models.Category>
+
+@{
+    ViewData["Title"] = "Categories";
+    Layout = "_AdminLayout";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+<style>
+    :root {
+        --bg-dark: #121212;
+        --bg-card: #1e1e1e;
+        --bg-item: #252525;
+        --bg-header: #181818;
+        --text-primary: #ffffff;
+        --text-secondary: #9ca3af;
+        --accent-orange: #ff9100;
+        --accent-orange-dark: #ff6d00;
+        --accent-glow: rgba(255, 145, 0, 0.4);
+        --border-color: #2d2d2d;
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .categories-content-final {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background-color: var(--bg-dark);
+        color: var(--text-primary);
+        padding: 40px;
+        max-width: 1200px;
+        margin: 20px auto;
+    }
+
+    /* Page Title & Add Button */
+    .page-title-section-final {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 20px;
+    }
+
+    .add-category-btn-outside {
+        background: linear-gradient(90deg, var(--accent-orange) 0%, var(--accent-orange-dark) 100%);
+        color: #fff;
+        border: none;
+        padding: 12px 22px;
+        border-radius: 6px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px var(--accent-glow);
+        transition: var(--transition);
+    }
+
+        .add-category-btn-outside:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 25px var(--accent-glow);
+            filter: brightness(1.1);
+        }
+
+    /* Table Header */
+    .category-header-row-final {
+        display: grid;
+        grid-template-columns: 50px 1fr 350px;
+        background-color: var(--bg-header);
+        padding: 18px 25px;
+        border-radius: 10px 10px 0 0;
+        font-size: 13px;
+        font-weight: bold;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Table Item & Row Hover Animation */
+    .category-item-final {
+        display: grid;
+        grid-template-columns: 50px 1fr 350px;
+        align-items: center;
+        padding: 22px 25px;
+        background-color: var(--bg-item);
+        border-bottom: 1px solid var(--border-color);
+        transition: var(--transition);
+        position: relative;
+    }
+
+        .category-item-final:hover {
+            background-color: #2c2c2c;
+            transform: translateX(8px);
+            box-shadow: -5px 0 0 var(--accent-orange);
+        }
+
+    /* Action Buttons Styling & Hover */
+    .action-btn-final {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: var(--text-secondary);
+        border: 1px solid #444;
+        padding: 8px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: var(--transition);
+        margin-left: 8px;
+    }
+
+        /* General Hover for Edit/AddSub */
+        .action-btn-final:hover {
+            background-color: var(--accent-orange);
+            color: white;
+            border-color: var(--accent-orange);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px var(--accent-glow);
+        }
+
+        /* Specific Delete Hover */
+        .action-btn-final.btn-del:hover {
+            background-color: #ef4444;
+            border-color: #ef4444;
+            box-shadow: 0 5px 12px rgba(239, 68, 68, 0.4);
+        }
+
+    /* Sub-category list indent */
+    .sub-category-list {
+        display: none;
+        grid-column: 1 / span 3;
+        background-color: rgba(0,0,0,0.15);
+        border-left: 2px dashed #444;
+        margin-left: 25px;
+    }
+
+    .toggle-btn {
+        background: none;
+        border: none;
+        color: var(--accent-orange);
+        cursor: pointer;
+        font-size: 16px;
+        transition: var(--transition);
+    }
+
+        .toggle-btn:hover {
+            transform: scale(1.2);
+        }
+
+    /* Modal Styling */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.85);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        backdrop-filter: blur(5px);
+    }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+    .modal-content {
+        background: var(--bg-item);
+        padding: 30px;
+        border-radius: 12px;
+        width: 450px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        transform: translateY(20px);
+        transition: var(--transition);
+    }
+
+    .modal-overlay.show .modal-content {
+        transform: translateY(0);
+    }
+
+    .form-control {
+        background: #181818;
+        border: 1px solid #333;
+        color: white;
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0 20px 0;
+        border-radius: 4px;
+    }
+</style>
+
+
+<main class="categories-content-final">
+
+    <section class="page-title-section-final">
+        <div>
+            <h1>Categories</h1>
+            <p>Organize artworks by categories and subcategories</p>
+        </div>
+
+        <button class="add-category-btn-outside" onclick="openModal('addCategoryModal')">
+            <i class="fas fa-plus"></i>&nbsp; Add Category
+        </button>
+    </section>
+
+
+    <div class="category-header-row-final">
+        <div></div>
+        <div>Category</div>
+        <div>Actions</div>
+    </div>
+
+
+    @foreach (var cat in Model)
+    {
+        <div class="category-item-final">
+            <div>
+                @if (cat.SubCategories?.Any() == true)
+                {
+                    <button onclick="toggleSub(@cat.Id)">
+                        <i id="toggle-icon-@cat.Id" class="fas fa-chevron-right"></i>
+                    </button>
+                }
+            </div>
+
+            <div>
+                <strong>@cat.Name</strong>
+                <p>@cat.Description</p>
+            </div>
+
+            <div>
+                <button class="action-btn-final" onclick="openAddSubModal(@cat.Id)">
+                    <i class="fas fa-plus"></i> Add Sub
+                </button>
+
+                <button class="action-btn-final" onclick="editCategory(@cat.Id)">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+
+                <button class="action-btn-final" onclick="deleteCategory(@cat.Id)">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </div>
+
+
+            <div id="sub-@cat.Id" class="sub-category-list">
+                @foreach (var sub in cat.SubCategories)
+                {
+                    <div class="category-item-final" style="margin-left:30px;">
+                        <div></div>
+                        <div>
+                            <strong>@sub.Name</strong>
+                            <p>@sub.Description</p>
+                        </div>
+
+                        <div>
+                            <button class="action-btn-final" onclick="editCategory(@sub.Id)">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+
+                            <button class="action-btn-final" onclick="deleteCategory(@sub.Id)">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</main>
+
+
+<!-- ============= ADD CATEGORY MODAL ============= -->
+<div id="addCategoryModal" class="modal-overlay">
+    <div class="modal-content">
+        <h2>Add Category</h2>
+
+        <form method="post" action="/Dashboard/AddCategory">
+            <label>Name</label>
+            <input type="text" name="Name" class="form-control" required />
+
+            <label>Description</label>
+            <textarea name="Description" class="form-control"></textarea>
+
+            <div class="modal-actions">
+                <button class="save-btn" type="submit">Save</button>
+                <button type="button" class="cancel-btn" onclick="closeModal('addCategoryModal')">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- ============= ADD SUBCATEGORY MODAL ============= -->
+<div id="addSubCategoryModal" class="modal-overlay">
+    <div class="modal-content">
+        <h2>Add Sub Category</h2>
+
+        <form method="post" action="/Dashboard/AddSubCategory">
+
+            <input type="hidden" id="parentCategoryId" name="ParentCategoryId" />
+
+            <label>Name</label>
+            <input type="text" name="Name" class="form-control" required />
+
+            <label>Description</label>
+            <textarea name="Description" class="form-control"></textarea>
+
+            <div class="modal-actions">
+                <button class="save-btn" type="submit">Save</button>
+                <button type="button" class="cancel-btn" onclick="closeModal('addSubCategoryModal')">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- ============= EDIT MODAL ============= -->
+<div id="editCategoryModal" class="modal-overlay">
+    <div class="modal-content">
+        <h2>Edit Category</h2>
+
+        <form method="post" action="/Dashboard/EditCategoryPost">
+            <input type="hidden" id="editId" name="Id" />
+
+            <label>Name</label>
+            <input type="text" id="editName" name="Name" class="form-control" required />
+
+            <label>Description</label>
+            <textarea id="editDescription" name="Description" class="form-control"></textarea>
+
+            <div class="modal-actions">
+                <button class="save-btn" type="submit">Save</button>
+                <button type="button" class="cancel-btn" onclick="closeModal('editCategoryModal')">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<script>
+
+    function openModal(id) {
+        document.getElementById(id).classList.add("show");
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.remove("show");
+    }
+
+    function toggleSub(id) {
+        let el = document.getElementById("sub-" + id);
+        let icon = document.getElementById("toggle-icon-" + id);
+
+        if (el.style.display === "grid") {
+            el.style.display = "none";
+            icon.classList.replace("fa-chevron-down", "fa-chevron-right");
+        } else {
+            el.style.display = "grid";
+            icon.classList.replace("fa-chevron-right", "fa-chevron-down");
+        }
+    }
+
+    function openAddSubModal(id) {
+        document.getElementById("parentCategoryId").value = id;
+        openModal("addSubCategoryModal");
+    }
+
+    function editCategory(id) {
+        fetch('/Dashboard/GetCategory/' + id)
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById("editId").value = data.id;
+                document.getElementById("editName").value = data.name;
+                document.getElementById("editDescription").value = data.description;
+
+                openModal('editCategoryModal');
+            });
+    }
+
+    function deleteCategory(id) {
+        if (confirm("Delete this category?")) {
+            fetch('/Dashboard/DeleteCategory/' + id, { method: "POST" })
+                .then(() => location.reload());
+        }
+    }
+</script>

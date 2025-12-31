@@ -1,0 +1,571 @@
+﻿@model IEnumerable<ArtGallery.ViewModels.ArtistView>
+
+@{
+    ViewData["Title"] = "My Portfolio";
+    Layout = "_ArtisLayout";
+}
+
+<div class="portfolio-container">
+    <header class="portfolio-header">
+        <div class="header-titles">
+            <h1>My Portfolio</h1>
+            <p>Manage and track all your artworks</p>
+        </div>
+        <a href="/ArtisUpload" class="add-art-button"> <i class="fas fa-plus"></i> Add New Art</a>
+    </header>
+
+    <div class="filter-bar">
+        <div class="search-input-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search artworks..." />
+        </div>
+    </div>
+
+    <div class="art-grid-wrapper">
+        <div class="art-grid">
+            @foreach (var art in Model)
+            {
+                <div class="art-card">
+                    <div class="art-image-container">
+                        <img src="@art.ImageUrl" alt="@art.Title" class="art-main-img" />
+                        @if (art.Type == "Auction")
+                        {
+                            <div class="type-badge">Auction</div>
+                        }
+
+                        <div class="card-options">
+                            <button class="three-dots-btn" onclick="toggleDropdown(event, this)">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <div class="options-menu">
+                                
+                                <a href="javascript:void(0)" onclick='openEditModal(@Json.Serialize(art))' class="menu-item edit-text">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a href="javascript:void(0)" onclick="deleteArt(@art.ArtworkId)" class="menu-item delete-text">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </a>
+                            
+                               
+
+
+                            </div>
+                        </div>
+
+                        <div class="status-badge @art.Status.ToLower()">@art.Status</div>
+                    </div>
+
+                  @*   <div class="art-info">
+                        <h3 class="art-title">@art.Title</h3>
+                        <p class="art-category">@art.Category</p> *@
+
+                        @* <div class="art-footer">
+                            <div class="art-date">
+                                <i class="far fa-calendar-alt"></i> Dec 02, 2026
+                            </div>
+                            <div class="price-tag">₹@art.Price</div>
+                        </div> *@
+                        <div class="art-info">
+                            <h3 class="art-title">@art.Title</h3>
+                            <p class="art-category">@art.Category</p>
+
+                            @if (art.Type == "Auction")
+                            {
+                                <div class="auction-info" style="background: #fff3e9; padding: 8px; border-radius: 8px; margin-bottom: 10px;">
+                                    <div style="font-size: 12px; color: #f97316; font-weight: bold;">
+                                        <i class="fas fa-gavel"></i> AUCTION
+                                    </div>
+                                    <div style="font-size: 13px; color: #475569;">
+                                        Starting: <strong>₹@art.StartingBid</strong>
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="art-footer">
+                                <div class="art-date">
+                                    <i class="far fa-calendar-alt"></i> Dec 02, 2026
+                                </div>
+
+                                @if (art.Type == "Auction")
+                                {
+                                    <div class="price-tag" style="color: #8b5cf6;">Bid Active</div>
+                                }
+                                else
+                                {
+                                    <div class="price-tag">₹@art.Price</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                
+            }
+        </div>
+    </div>
+</div>
+@* <div id="editModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Edit Artwork</h2>
+            <button onclick="closeModal()" class="close-btn">&times;</button>
+        </div>
+        <form asp-action="EditArtist" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="edit-id" name="ArtworkId" />
+
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="edit-title" name="Title" required />
+            </div>
+            <div class="form-group">
+                <label>Price</label>
+                <input type="number" id="edit-price" name="Price" required />
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <input type="text" id="edit-category" name="Category" required />
+            </div>
+            <div class="form-group">
+                <label>Artist Name</label>
+                <input type="text" id="edit-artist" name="Artists" required />
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" onclick="closeModal()" class="btn-cancel">Cancel</button>
+                <button type="submit" class="btn-save">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div> *@
+<div id="editModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Edit Artwork</h2>
+            <button onclick="closeModal()" class="close-btn">&times;</button>
+        </div>
+        <form asp-controller="Artis" asp-action="EditArtist" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="edit-id" name="ArtworkId" />
+            <input type="hidden" id="edit-type" name="Type" />
+
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="edit-title" name="Title" required />
+            </div>
+
+            <div class="form-group">
+                <label>Current Image</label>
+                <div style="margin-bottom: 10px;">
+                    <img id="edit-preview" src="" style="width: 100px; height: 100px; border-radius: 8px; object-fit: cover; border: 1px solid #ddd;" />
+                </div>
+
+                <input type="file" name="ImageFile" class="form-control" />
+                <small>Leave empty to keep current image</small>
+            </div>
+
+            <div class="form-group">
+                <label>Price / Base Price</label>
+                <input type="number" id="edit-price" name="Price" required />
+            </div>
+
+            <div id="edit-auction-fields" style="display:none;">
+                <div class="form-group">
+                    <label style="color: #ea580c;">Auction Starting Bid</label>
+                    <input type="number" id="edit-starting-bid" name="StartingBid" />
+                </div>
+            </div>
+
+            @* <div class="form-group">
+                <label>Category</label>
+                <input type="text" id="edit-category" name="Category" required />
+            </div> *@
+            <div class="form-group">
+                <label>Category</label>
+                <select id="edit-category" name="Category" required>
+                    <option value="">Select a category</option>
+                    @if (ViewBag.CategoryList != null)
+                    {
+                        foreach (var cat in (IEnumerable<ArtGallery.Models.Category>)ViewBag.CategoryList)
+                        {
+                            <option value="@cat.Name">@cat.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Artist Name</label>
+                <input type="text" id="edit-artist" name="Artists" required />
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" onclick="closeModal()" class="btn-cancel">Cancel</button>
+                <button type="submit" class="btn-save">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+<style>
+    /* Main Layout */
+    .portfolio-container {
+        min-height: 100vh;
+        background-color: #f8fafc;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .portfolio-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 30px;
+        background: #fff;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .header-titles h1 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+    }
+
+    .add-art-button {
+        background: #ea580c;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .filter-bar {
+        padding: 20px 30px;
+        background: #fff;
+    }
+
+    .search-input-wrapper input {
+        width: 400px;
+        padding: 10px 40px;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+    }
+
+    /* Art Grid & Cards */
+    .art-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+        padding: 0 5px;
+    }
+
+    .art-card {
+        background: linear-gradient(180deg, #ffffff 0%, #fff7f3 100%);
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid #f1f5f9;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .art-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+        }
+
+    .art-image-container {
+        height: 220px;
+        position: relative;
+    }
+
+    .art-main-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Badge & Menu */
+    .status-badge {
+        position: absolute;
+        bottom: 12px;
+        left: 12px;
+        background: #10b981;
+        color: white;
+        padding: 5px 12px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+        .status-badge.pending {
+            background: #f59e0b;
+        }
+
+    .card-options {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+    }
+
+    .three-dots-btn {
+        /* background: rgba(255,255,255,0.9); */
+        /* color: #334155; */
+        border: none;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .options-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 40px;
+        background: white;
+        border-radius: 12px;
+        min-width: 160px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        z-index: 100;
+        padding: 8px;
+    }
+
+        .options-menu.active {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+    .menu-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 12px;
+        font-size: 14px;
+        color: #475569;
+        text-decoration: none;
+        gap: 10px;
+        border-radius: 8px;
+    }
+
+        .menu-item:hover {
+            background: #f8fafc;
+        }
+
+    .edit-text {
+        color: #8b5cf6 !important;
+    }
+
+    .delete-text {
+        color: #ef4444 !important;
+    }
+
+    /* Info Section */
+    .art-info {
+        padding: 20px;
+    }
+
+    .art-title {
+        font-size: 19px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0;
+        text-transform: capitalize;
+    }
+
+    .art-category {
+        color: #64748b;
+        font-size: 14px;
+        margin: 6px 0 15px 0;
+    }
+
+    .art-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 15px;
+    }
+
+    .art-date {
+        font-size: 13px;
+        color: #94a3b8;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .price-tag {
+        font-weight: 800;
+        color: #ea580c;
+        font-size: 17px;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+
+  
+<style>
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        width: 450px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .btn-save {
+        background: #ea580c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .btn-cancel {
+        background: #f3f4f6;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        margin-right: 10px;
+    }
+
+    .type-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: #8b5cf6;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+</style>
+<script>
+    // --- SIRF YEH EK FUNCTION RAKHEIN ---
+    function openEditModal(artJson) {
+        console.log("Data received:", artJson); // Check karne ke liye ke data aa raha hai
+
+        // 1. Basic Inputs fill karein
+        document.getElementById('edit-id').value = artJson.artworkId;
+        document.getElementById('edit-title').value = artJson.title;
+        document.getElementById('edit-price').value = artJson.price;
+        document.getElementById('edit-category').value = artJson.category;
+        document.getElementById('edit-artist').value = artJson.artists;
+
+        // 2. Type update karein (hidden field)
+        if(document.getElementById('edit-type')) {
+            document.getElementById('edit-type').value = artJson.type;
+        }
+
+        // 3. Auction Logic: Agar type Auction hai to Starting Bid dikhao
+        const auctionSection = document.getElementById('edit-auction-fields');
+        if (artJson.type === 'Auction') {
+            auctionSection.style.display = 'block';
+            document.getElementById('edit-starting-bid').value = artJson.startingBid || 0;
+        } else {
+            auctionSection.style.display = 'none';
+        }
+
+        // 4. Modal ko show karein
+        document.getElementById('editModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('editModal').style.display = 'none';
+    }
+
+    // --- DELETE LOGIC ---
+    function deleteArt(id) {
+        if(confirm("Kya aap waqayi is artwork ko delete karna chahte hain?")) {
+            // Controller mein 'DeleteArt' ka action hona zaroori hai
+            fetch('/Artis/DeleteArt/' + id, {
+                method: 'POST',
+                headers: {
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    alert("Delete ho gaya!");
+                    location.reload();
+                } else {
+                    alert("Delete nahi ho saka.");
+                }
+            });
+        }
+    }
+        function toggleDropdown(event, button) {
+        // Event ko propagate hone se rokein taake window click trigger na ho jaye
+        event.stopPropagation();
+
+        // Button ke agla element (options-menu) pakdein
+        const currentMenu = button.nextElementSibling;
+
+        // Baaki saare khule huye menus ko band karein
+        document.querySelectorAll('.options-menu').forEach(m => {
+            if (m !== currentMenu) m.classList.remove('active');
+        });
+
+        // Current menu ko toggle karein
+        currentMenu.classList.toggle('active');
+    }
+
+    // Kahin bhi bahar click karne par menu band ho jaye
+    window.onclick = function(event) {
+        if (!event.target.matches('.three-dots-btn') && !event.target.matches('.fa-ellipsis-v')) {
+            document.querySelectorAll('.options-menu').forEach(m => {
+                m.classList.remove('active');
+            });
+        }
+    }
+</script>
